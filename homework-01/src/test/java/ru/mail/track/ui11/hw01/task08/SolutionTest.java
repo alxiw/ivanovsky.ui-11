@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.mail.track.ui11.hw01.SysOutCaptureAndAssertionAbility;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Тест-класс для Задачи №8 - функции возвращающей
@@ -16,7 +16,9 @@ public class SolutionTest implements SysOutCaptureAndAssertionAbility {
 
     private static final String RN = "\r\n";
 
-    public static final List<Integer> numbers = Arrays.asList(2, 3, 1, 5, 6, 7, 8, 9, 12);
+    private static Predicate predicate1 = x -> true;
+    private static Predicate predicate2 = x -> false;
+    private static Function<Integer, Integer> intFunc = number -> number - 15;
 
     @Before
     public void setUpSystemOut() {
@@ -31,13 +33,10 @@ public class SolutionTest implements SysOutCaptureAndAssertionAbility {
 
     @Test
     public void main() {
-        int a = -4;
+        System.out.println(Solution.getFunctionIntegerToPredicate(predicate1, predicate2).apply(intFunc.apply(10)).test(""));
+        System.out.println(Solution.getFunctionIntegerToPredicate(predicate1, predicate2).apply(intFunc.apply(-10)).test(""));
 
-        numbers.stream().filter(Solution.intFunc(a)).forEach(System.out::println);
-
-        String result = 2 + RN + 3 + RN + 1 + RN + 5;
-
-        assertSysOutEquals(result + RN);
+        assertSysOutEquals(true + RN + false + RN);
     }
 
 }

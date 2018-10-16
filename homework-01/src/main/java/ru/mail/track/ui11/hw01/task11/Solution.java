@@ -1,7 +1,9 @@
 package ru.mail.track.ui11.hw01.task11;
 
-import java.io.*;
-import java.nio.charset.Charset;
+import java.io.File;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
 /**
  * Задача №11
@@ -39,94 +41,33 @@ public class Solution {
      *                     или неправильном подключении труб
      * @throws InterruptedException исключение, отлавливаесое при неправильном ожидании потоков
      */
-    public static void sendMessageThroughPipeFromFileToFile(File source, File output) throws IOException, InterruptedException {
-        final PipedInputStream pis = new PipedInputStream();
-        final PipedOutputStream pos = new PipedOutputStream();
+    public static void sendMessageThroughPipeFromFileToFile(File source, File output) throws InterruptedException, IOException {
 
-        pis.connect(pos);
+        try (PipedInputStream pis = new PipedInputStream();
+             PipedOutputStream pos = new PipedOutputStream()) {
 
-        /*
-         * Поток для записи данных в трубу
-         */
-        Thread pipeWriter = new Thread(() -> {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(source), Charset.forName("UTF-8")));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    char[] values = censor(line).toCharArray();
-                    for (char value : values)
-                        pos.write(value);
-                    pos.write('\r');
-                    pos.write('\n');
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-        });
+            /*
+             * Соединение труб
+             */
+            pis.connect(pos);
 
-        /*
-         * Поток для чтения данных из трубы и записи данных в файл
-         */
-        Thread pipeReader = new Thread(() -> {
-            try {
-                FileWriter writer = new FileWriter(output);
-                StringBuilder sb = new StringBuilder();
-                while (pis.available() != 0) {
-                    char y = (char) pis.read();
-                    if (y != '\n') {
-                        sb.append(String.valueOf(y));
-                    } else {
-                        writer.write(sb.toString());
-                        writer.write("\n");
-                        sb = new StringBuilder();
-                    }
-                    Thread.sleep(10);
-                }
-                writer.close();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        });
+            /*
+             * Поток для записи данных в трубу
+             */
+            Reader reader = new Reader(pos, source);
+            Thread one = new Thread(reader);
 
-        /*
-         * Старт потоков
-         */
-        pipeWriter.start();
-        pipeReader.start();
+            /*
+             * Поток для чтения данных из трубы и записи данных в файл
+             */
+            Writer writer = new Writer(pis, output);
+            Thread two = new Thread(writer);
 
-        /*
-         * Ожидание потоков
-         */
-        pipeWriter.join();
-        pipeReader.join();
+            one.start();
+            one.join();
 
-        /*
-         * Закрытие потоков
-         */
-        pos.close();
-        pis.close();
-    }
-
-    /**
-     * Функция, заменяющая в строке каждый числовой символ на X
-     * @param line строка
-     * @return строка, в которой каждый числовой символ заменён на X
-     */
-    private static String censor(String line) {
-        char[] values = line.toCharArray();
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] >= 48 && values[i] <= 57) values[i] = 'X';
+            two.start();
+            two.join();
         }
-        return String.valueOf(values);
     }
-
 }

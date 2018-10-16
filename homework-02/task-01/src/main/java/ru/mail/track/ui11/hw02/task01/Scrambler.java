@@ -1,5 +1,7 @@
 package ru.mail.track.ui11.hw02.task01;
 
+import java.io.File;
+
 /**
  * Задача №1 - Шифрование
  *
@@ -19,6 +21,31 @@ package ru.mail.track.ui11.hw02.task01;
  * Входной csv файл должен лежать в папке resources maven проекта
  * А выходной в создаваемой в корне проекта папке results
  */
-public class Solution {
+public class Scrambler {
 
+    private Scrambler() {
+        // private constructor
+    }
+
+    public static void scrambleDataFromSourceFileAndSaveToResultFile(File source, File result, boolean isToEncode) throws InterruptedException {
+        Buffer firstBuffer = new Buffer();
+        Buffer secondBuffer = new Buffer();
+
+        Reader reader = new Reader(firstBuffer, source);
+        Coder coder = new Coder(firstBuffer, secondBuffer, isToEncode);
+        Writer writer = new Writer(secondBuffer, result);
+
+        Thread one = new Thread(reader);
+        Thread two = new Thread(coder);
+        Thread three = new Thread(writer);
+
+        one.start();
+        one.join();
+
+        two.start();
+        two.join();
+
+        three.start();
+        three.join();
+    }
 }

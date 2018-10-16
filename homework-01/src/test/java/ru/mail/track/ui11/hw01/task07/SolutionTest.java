@@ -17,7 +17,7 @@ public class SolutionTest implements SysOutCaptureAndAssertionAbility {
 
     private static final String RN = "\r\n";
 
-    private static final int[] LENGTHS = {3, 4, 5};
+    private static final int[] LENGTHS = {1, 3, 4, 5, 18};
 
     public static List<String> list = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class SolutionTest implements SysOutCaptureAndAssertionAbility {
     @Test
     public void main() throws IOException {
         try {
-            Solution.printStringsToCsv(list, LENGTHS, file);
+            Solution.printStringsToCsv(list, file, LENGTHS);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }

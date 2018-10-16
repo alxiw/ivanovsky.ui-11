@@ -1,6 +1,7 @@
 package ru.mail.track.ui11.hw01.task05;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,13 +19,17 @@ public class Solution {
      * @return тот же список, положительные элементы которого переставлены в обратном порядке
      */
     public static List<Double> reversePositivesInList(List<Double> list) {
-        for (Double itemFirst : list) {
+        Iterator<Double> iteratorFirst = list.iterator();
+        while (iteratorFirst.hasNext()) {
+            Double itemFirst = iteratorFirst.next();
             if (itemFirst > 0) {
                 int a = list.indexOf(itemFirst);
                 int b = 0;
 
                 Collections.reverse(list);
-                for (Double itemLast : list) {
+                Iterator<Double> iteratorLast = list.iterator();
+                while (iteratorLast.hasNext()) {
+                    Double itemLast = iteratorLast.next();
                     if (itemLast > 0) {
                         b = list.indexOf(itemLast);
                         double temp = list.get(list.size()-1-a);

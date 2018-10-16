@@ -1,5 +1,6 @@
 package ru.mail.track.ui11.hw01.task08;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -11,16 +12,16 @@ import java.util.function.Predicate;
  */
 public class Solution {
 
+    private static Function<Integer, Integer> intFunc1 = number -> number + 15;
+
     /**
      * Реализация функции, возвращающей различные предикаты в зависимости от параметра
-     * @param intFunc1 параметр, являющийся целым числом
-     * @return predicate1 если параметр > 0
-     *         predicate2 если параметр <=0
+     * @param predicate1 предиката, для случая intFunc > 0
+     * @param predicate2 предиката, для случая intFunc <= 0
+     * @return соответствующая предиката
      */
-    public static Predicate<Integer> intFunc(int intFunc1) {
-        Predicate<Integer> predicate1 = n -> n > 5;
-        Predicate<Integer> predicate2 = n -> n <= 5;
-        return intFunc1 > 0 ? predicate1 : predicate2;
+    public static Function<Integer, Predicate> getFunctionIntegerToPredicate(Predicate predicate1, Predicate predicate2) {
+        return i -> intFunc1.apply(i) > 0 ? predicate1 : predicate2;
     }
 
 }

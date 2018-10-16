@@ -6,7 +6,7 @@ import java.util.Stack;
 /**
  * Класс, реализующий интерфейс очереди c использованием двух стеков
  */
-public class DoubleStackQueueImpl<E> implements DoubleStackQueue {
+public class DoubleStackQueueImpl<E> implements DoubleStackQueue<E> {
 
     /**
      * Два стека для хранения элементов
@@ -22,15 +22,15 @@ public class DoubleStackQueueImpl<E> implements DoubleStackQueue {
      * @exception Exception будет пойман в случае неудачного помещения элемента в очередь
      */
     @Override
-    public boolean add(Object item) {
+    public boolean add(E item) {
         try {
             if (!two.isEmpty()) {
                 while (!two.isEmpty()) {
                     one.push(two.pop());
                 }
             }
-            one.push((E) item);
-            return true;
+            one.push(item);
+            return one.peek() == item;
         } catch (Exception e) {
             return false;
         }

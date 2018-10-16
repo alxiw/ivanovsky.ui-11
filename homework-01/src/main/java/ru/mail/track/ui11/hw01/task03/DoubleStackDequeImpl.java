@@ -6,7 +6,7 @@ import java.util.Stack;
 /**
  * Класс, реализующий интерфейс двусторонней очереди c использованием стеков
  */
-public class DoubleStackDequeImpl<E> implements DoubleStackDeque {
+public class DoubleStackDequeImpl<E> implements DoubleStackDeque<E> {
 
     /**
      * Два стека для хранения элементов
@@ -25,25 +25,25 @@ public class DoubleStackDequeImpl<E> implements DoubleStackDeque {
      * @exception Exception будет пойман в случае неудачного помещения элемента в очередь
      */
     @Override
-    public boolean add(Object item, boolean first) {
+    public boolean add(E item, boolean first) {
         if (first) {
             try {
                 if (!two.isEmpty()) {
                     while (!two.isEmpty())
                         one.push(two.pop());
                 }
-                one.push((E) item);
-                return true;
-            } catch (Exception e) {
+                one.push(item);
+                return one.peek() == item;
+            } catch (Exception ex) {
                 return false;
             }
         } else {
             try {
                 while (!one.isEmpty())
                     two.push(one.pop());
-                two.push((E) item);
-                return true;
-            } catch (Exception e) {
+                two.push(item);
+                return two.peek() == item;
+            } catch (Exception ex) {
                 return false;
             }
         }
@@ -58,7 +58,7 @@ public class DoubleStackDequeImpl<E> implements DoubleStackDeque {
      * @throws EmptyStackException будет выброшен, если в очереди нет элементов
      */
     @Override
-    public Object poll(boolean first) {
+    public E poll(boolean first) {
         if (first) {
             if (!two.isEmpty()) {
                 while (!two.isEmpty())

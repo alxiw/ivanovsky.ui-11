@@ -5,6 +5,6 @@ import static org.junit.Assert.*;
 /**
  * Тест-класс для Задачи №1 - Шифрование
  */
-public class SolutionTest {
+public class ScramblerTest {
 
 }

@@ -5,59 +5,43 @@ import java.time.LocalTime;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Задача №9
- *
- * Напишите программу, которая каждые 2 секунды отображает на экране данные о времени,
- * прошедшем от начала сессии, а другой ее поток выводит сообщение каждые 10 секунд
- */
-public class Stopwatch {
+public class Stopwatch implements Runnable {
 
-    /*
-     * Временной интервал в мс, через который выводятся данные о времени, прошедшем от начала сессии
-     */
-    private static final long SHORT_TIME = 2000L;
+    private long duration;
 
-    /*
-     * Временной интервал в мс, через который выводится сообщение
-     */
-    private static final long LONG_TIME = 10000L;
+    public Stopwatch(long duration) {
+        this.duration = duration;
+    }
 
-    public static void main(String[] args) {
-
-        /*
-         * Создание и инициализация потока, выводящее время с начала сессии каждые 2 секунды
-         */
-        Thread thread = new Thread(() -> {
-            LocalTime startTime = LocalTime.now();
-            try {
-                while (!Thread.currentThread().isInterrupted()) {
-                    sleep(SHORT_TIME);
-                    Duration duration = Duration.between(startTime, LocalTime.now());
-                    System.out.println(duration.getSeconds() + " seconds passed");
-                }
-            } catch (InterruptedException e) {
-                System.out.println("Interrupted Exception in secondary thread: " + e.getMessage());
-            }
-        });
-
-        /*
-         * Запуск потока, выводящее время с начала сессии каждые 2 секунды
-         */
-        thread.setDaemon(true);
-        thread.start();
-
-        /*
-         * Вывод сообщения основным потоком каждые 10 секунд
-         */
+    @Override
+    public void run() {
+        LocalTime today = LocalTime.now();
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                sleep(LONG_TIME);
-                System.out.println("Welcome to the Machine!");
+                sleep(duration);
+                printTimeDuration(today);
             }
         } catch (InterruptedException e) {
-            System.out.println("Interrupted Exception in main thread: " + e.getMessage());
+            System.out.println("Interrupted Exception in secondary thread: " + e.getMessage());
         }
     }
 
+    /*
+     * Вывод данных о времени, прошедшем с запуска
+     */
+    private void printTimeDuration(LocalTime today) {
+        Duration p = Duration.between(today, LocalTime.now());
+        long hours = p.getSeconds() / (60*60);
+        long minutes = p.getSeconds() / 60;
+        long seconds = p.getSeconds() % 60;
+
+        String h = (hours == 1) ? "час" : (hours >= 2 && hours <= 4) ? "час" : "часов";
+        String m = (minutes == 1) ? "минута" : (minutes >= 2 && minutes <= 4) ? "минуты" : "минут";
+        String s = (seconds == 1) ? "секунда" : (seconds >= 2 && seconds <= 4) ? "секунды" : "секунд";
+
+        String string = "Прошло %d " + h + ", %d " + m + ", %d " + s;
+
+        String line = String.format(string, hours , minutes , seconds);
+        System.out.println(line);
+    }
 }

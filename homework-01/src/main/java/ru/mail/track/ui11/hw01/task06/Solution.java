@@ -15,17 +15,20 @@ import java.util.*;
  */
 public class Solution {
 
-    /*
-     * Количество самых популярных факультетов, которое необходимо вывести
-     */
-    private static int NUMBER = 3;
-
     /**
      * Реализация функции, выводящей на экран отсортированного по именам списка студентов,
      * и трёх самых популярных факультетов с количеством человек
      * @param list список студентов
      */
-    public static void printListOfStudentsWithTopFaculties(List<Student> list) {
+    public static void printListOfStudentsWithTopFaculties(List<Student> list, int... args) {
+        /*
+         * Количество самых популярных факультетов, которое необходимо вывести
+         */
+        int number = 3;
+
+        if (args.length != 0 && args[0] > 0)
+            number = args[0];
+
         /*
          * Вывод на экран отсортированного по именам списка студентов
          */
@@ -34,7 +37,7 @@ public class Solution {
         /*
          * Вывод на экран трёх самых популярных факультетов
          */
-        printTopFaculties(list, NUMBER);
+        printTopFaculties(list, number);
     }
 
     /**
@@ -74,23 +77,12 @@ public class Solution {
                 .forEach(e -> top.add(e.getKey() + " (" + e.getValue() + " человек)"));
 
         /*
-         * Формирование строки с тремя самыми популярными факультетами
+         * Формирование строки с тремя самыми популярными факультетами и вывод её на экран
          */
         StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < top.size(); i++) {
-            if (i >= number)
-                break;
-            else
-                sb.append(top.get(i)).append(", ");
-        }
-
+        top.stream().limit(number).forEach(s -> sb.append(s).append(", "));
         if (sb.toString().length() != 0)
-            sb.insert(0, "Top 3: ").delete(sb.toString().length() - 2, sb.toString().length() - 1);
-
-        /*
-         * Вывод на экран трёх самых популярных факультетов
-         */
+            sb.insert(0, "Top " + number + ": ").delete(sb.toString().length() - 2, sb.toString().length());
         System.out.println(sb.toString());
     }
 

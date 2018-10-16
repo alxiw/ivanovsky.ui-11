@@ -2,6 +2,8 @@ package ru.mail.track.ui11.hw01.task07;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.opencsv.CSVWriter;
 
@@ -25,10 +27,10 @@ public class Solution {
      * Функция, выводящая в csv-файл строки длинами, указанными в массиве LENGTH
      * @param list список строк
      * @param lengths длины строк, которые функция выведет
-     * @param path путь к файлу, в который функция выведет строки
+     * @param path файл, в который функция выведет строки
      * @throws FileNotFoundException исключениеЮ которое будет поймано в случае, если файл не будет найден
      */
-    public static void printStringsToCsv(List<String> list, int[] lengths, File path) throws FileNotFoundException {
+    public static void printStringsToCsv(List<String> list, File path, int... lengths) throws IOException {
         PrintWriter pw = new PrintWriter(path);
 
         CSVWriter writer = new CSVWriter(pw, '|',
@@ -50,21 +52,26 @@ public class Solution {
         List<String[]> data = new ArrayList<>();
 
         for (int l : lengths) {
-            List<String> string = new ArrayList<>();
+            List<String> strings = new ArrayList<>();
+
             for (Map.Entry entry : map.entrySet()) {
-                if (entry.getKey().equals(l)) {
-                    string = map.get(l);
-                }
+                if (entry.getKey().equals(l))
+                    strings = map.get(l);
             }
-            String[] array = new String[string.size() + 1];
+
+            if (strings.isEmpty())
+                continue;
+
+            String[] array = new String[strings.size() + 1];
             array[0] = String.valueOf(l);
             for (int i = 1; i < array.length; i++) {
-                array[i] = string.get(i - 1);
+                array[i] = strings.get(i - 1);
             }
             data.add(array);
         }
 
         writer.writeAll(data);
+        writer.close();
         pw.close();
     }
 

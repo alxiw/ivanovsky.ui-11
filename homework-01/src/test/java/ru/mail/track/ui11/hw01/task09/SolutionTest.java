@@ -10,7 +10,7 @@ import ru.mail.track.ui11.hw01.SysOutCaptureAndAssertionAbility;
  * отображает на экране данные о времени, прошедшем от начала сессии,
  * а другой ее поток выводит сообщение каждые 10 секунд
  */
-public class StopwatchTest implements SysOutCaptureAndAssertionAbility {
+public class SolutionTest implements SysOutCaptureAndAssertionAbility {
 
     @Before
     public void setUpSystemOut() {
