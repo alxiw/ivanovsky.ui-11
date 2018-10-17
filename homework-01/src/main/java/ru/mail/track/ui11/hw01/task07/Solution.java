@@ -3,7 +3,7 @@ package ru.mail.track.ui11.hw01.task07;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import com.opencsv.CSVWriter;
 
@@ -49,30 +49,27 @@ public class Solution {
             map.put(key, check);
         }
 
-        List<String[]> data = new ArrayList<>();
-
-        for (int l : lengths) {
-            List<String> strings = new ArrayList<>();
-
-            for (Map.Entry entry : map.entrySet()) {
-                if (entry.getKey().equals(l))
-                    strings = map.get(l);
-            }
-
-            if (strings.isEmpty())
-                continue;
-
-            String[] array = new String[strings.size() + 1];
-            array[0] = String.valueOf(l);
-            for (int i = 1; i < array.length; i++) {
-                array[i] = strings.get(i - 1);
-            }
-            data.add(array);
-        }
+        List<String[]> data = Arrays.stream(lengths)
+                .filter(length -> !getStringsOfSameLength(map, length).isEmpty())
+                .mapToObj(length -> getStringsOfSameLength(map, length))
+                .map(str -> {
+                    String[] array = new String[str.size() + 1];
+                    array[0] = String.valueOf(str.get(0).length());
+                    IntStream.range(1, array.length)
+                            .forEach(index -> array[index] = str.get(index - 1));
+                    return array;
+                }).collect(Collectors.toList());
 
         writer.writeAll(data);
         writer.close();
         pw.close();
+    }
+
+    private static List<String> getStringsOfSameLength(Map<Integer, List<String>> strings, int length) {
+        Optional<Map.Entry<Integer, List<String>>> options = strings.entrySet().stream()
+                .filter(entry -> entry.getKey() == length)
+                .findFirst();
+        return options.isPresent() ? options.get().getValue() : new ArrayList<>();
     }
 
 }
