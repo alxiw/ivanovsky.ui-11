@@ -42,7 +42,7 @@ public class KeyKeeper {
     private static final String KEYS_DIR = "keys";
 
     private static final String PRIVATE_KEY_FILE = "private.key";
-    private static final String PUBLIC_KEY_FILE = "public.key";
+    private static final String PUBLIC_KEY_FILE = "public.pub";
 
     private static final int KEYSIZE = 2048;
 
