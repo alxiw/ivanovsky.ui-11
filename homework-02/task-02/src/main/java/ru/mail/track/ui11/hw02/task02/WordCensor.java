@@ -47,15 +47,17 @@ public class WordCensor {
         String exception = SOURCES_DIR + SLASH + EXCEPTION_FILE;
         String result = RESULTS_DIR + SLASH + RESULT_FILE;
 
+        Checker checker = new Checker(args);
+
         Reader reader = new Reader(new File(source));
         List<Item> list = reader.read();
 
-        Checker checker = new Checker(new File(exception));
-        checker.accept(args);
-        List<Item> handled = checker.handle(list);
+        Handler handler = new Handler(new File(exception));
+        List<Item> handled = handler.handle(list, checker.getN(), checker.getStart(), checker.getSize());
 
         new File(RESULTS_DIR).mkdir();
         Writer writer = new Writer(new File(result));
         writer.write(handled);
+
     }
 }

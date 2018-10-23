@@ -23,7 +23,7 @@ public class Writer {
      * @throws IOException в случае неудачной записи в файл
      */
     public void write(List<Item> list) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(this.file))) {
             list.forEach(s -> writer.write(s.getWord() + s.getEnding()));
             System.out.println("RESULT FILE IS SAVED");
         }

@@ -23,7 +23,7 @@ public class Reader {
      */
     public List<Item> read() throws IOException {
         StringBuilder sb;
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(this.file), StandardCharsets.UTF_8)) {
             sb = new StringBuilder();
             while (reader.ready()) {
                 sb.append((char) reader.read());

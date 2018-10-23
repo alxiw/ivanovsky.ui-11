@@ -23,11 +23,15 @@
 *.tar.gz
 *.rar
 
-# Test files
+# Test Files
 *.csv
 *.key
 *.bat
 *.txt
+
+# Target Folder
+*/target
+
 
 # Excepted test files
 !/homework-02/*/src/main/resources/*
