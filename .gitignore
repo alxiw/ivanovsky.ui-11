@@ -1,20 +1,10 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
 # IntelliJ IDEA files
+/**/.idea
 *.iml
-.idea/*
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Target folder and compiled class and package files
+/**/target
+*.class
 *.jar
 *.war
 *.nar
@@ -23,14 +13,12 @@
 *.tar.gz
 *.rar
 
-# Test files
-*.csv
-*.key
+# Test and log files
+*.log
 *.bat
+*.key
+*.csv
 *.txt
 
-# Excepted test files
-!/homework-02/task-01/src/main/resources/source.csv
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Excepted test folders and files
+!/homework-02/*/src/main/resources/*
