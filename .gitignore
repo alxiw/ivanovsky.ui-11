@@ -13,13 +13,12 @@
 *.tar.gz
 *.rar
 
-# Test Files
+# Test and log files
+*.log
+*.bat
+*.key
 *.csv
 *.txt
 
-# Target Folder
-*/target
-
-
-# Excepted test files
+# Excepted test folders and files
 !/homework-02/*/src/main/resources/*
