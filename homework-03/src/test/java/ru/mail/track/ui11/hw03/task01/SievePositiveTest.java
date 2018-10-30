@@ -1,50 +1,40 @@
 package ru.mail.track.ui11.hw03.task01;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import ru.mail.track.ui11.hw03.SysOutCaptureAndAssertionAbility;
+import org.hamcrest.Matchers;
+import org.junit.*;
 
 /**
  * Тест-класс позитивных тестов к задаче №1
  */
-public class SievePositiveTest implements SysOutCaptureAndAssertionAbility {
-
-    @Before
-    public void setUpSystemOut() {
-        captureSysOut();
-    }
-
-    @After
-    public void tearDown() {
-        resetOut();
-    }
+public class SievePositiveTest {
 
     @Test
     public void printPrimesToTwo() {
-        Sieve.printAllPrimes(2);
-        assertSysOutEquals("2" + RN);
+        String actual = Sieve.printAllPrimes(2);
+        String expected = "2";
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void printPrimesToTen() {
-        Sieve.printAllPrimes(10);
-        assertSysOutEquals("2 3 5 7" + RN);
+        String actual = Sieve.printAllPrimes(10);
+        String expected = "2 3 5 7";
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void printPrimesToOneHundred() {
-        Sieve.printAllPrimes(100);
-        assertSysOutEquals("2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97" + RN);
+        String actual = Sieve.printAllPrimes(100);
+        String expected = "2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97";
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void printPrimesToTenMillions() {
-        Sieve.printAllPrimes(10_000_000);
+    public void printPrimesToOneMillion() {
+        String actual = Sieve.printAllPrimes(1_000_000);
         String start = "2 3 5 7 11 13 17 19 23 29";
-        String end = "9999889 9999901 9999907 9999929 9999931 9999937 9999943 9999971 9999973 9999991";
-        assertSysOutContains(start);
-        assertSysOutContains(end);
+        String end = "999863 999883 999907 999917 999931 999953 999959 999961 999979 999983";
+        Assert.assertThat(actual, Matchers.containsString(start));
+        Assert.assertThat(actual, Matchers.containsString(end));
     }
-
 }

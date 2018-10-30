@@ -1,45 +1,36 @@
 package ru.mail.track.ui11.hw03.task01;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import ru.mail.track.ui11.hw03.SysOutCaptureAndAssertionAbility;
+import org.hamcrest.Matchers;
+import org.junit.*;
 
 /**
  * Тест-класс негативных тестов к задаче №1
  */
-public class SieveNegativeTest implements SysOutCaptureAndAssertionAbility {
-
-    @Before
-    public void setUpSystemOut() {
-        captureSysOut();
-    }
-
-    @After
-    public void tearDown() {
-        resetOut();
-    }
+public class SieveNegativeTest {
 
     @Test(expected = ArithmeticException.class)
     public void printPrimesToMinusTwo() {
-        Sieve.printAllPrimes(-2);
+        String actual = Sieve.printAllPrimes(-2);
     }
 
     @Test
     public void printPrimesToZero() {
-        Sieve.printAllPrimes(0);
-        assertSysOutEquals("");
+        String actual = Sieve.printAllPrimes(0);
+        String expected = "";
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void printPrimesToOne() {
-        Sieve.printAllPrimes(1);
-        assertSysOutEquals("");
+        String actual = Sieve.printAllPrimes(1);
+        String expected = "";
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void printPrimesToChar() {
-        Sieve.printAllPrimes('a');
-        assertSysOutContains("97");
+        String actual = Sieve.printAllPrimes('a');
+        String end = "97";
+        Assert.assertThat(actual, Matchers.containsString(end));
     }
 }

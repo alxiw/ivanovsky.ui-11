@@ -14,14 +14,22 @@ public class Sieve {
         //private constructor
     }
 
-    public static void printAllPrimes(int n) {
+    /**
+     * Метод, выводящий все простые числа от 0 до n
+     * @param n число от 0 до которого необходимо вывести все простые числа
+     * @return строка, содержащая все простые числа от 0 до n
+     */
+    public static String printAllPrimes(int n) {
         int[] primes = findAllPrimes(n);
+        StringBuilder sb = new StringBuilder();
         if (primes.length > 0) {
-            for (int i = 0; i < primes.length - 1; i++) {
-                System.out.print(primes[i] + " ");
+            for (int i = 0; i < primes.length; i++) {
+                sb.append(primes[i] + " ");
             }
-            System.out.println(primes[primes.length - 1]);
+            sb.deleteCharAt(sb.toString().length()-1);
+            System.out.println(sb.toString());
         }
+        return sb.toString();
     }
 
     private static int[] findAllPrimes(int n) {
