@@ -28,14 +28,14 @@ public abstract class AbstractPage<T> {
 
     public T open() {
         driver.get(getDomain() + getPageUrl());
-        assertUrl();
+        checkPageUrl();
         return (T) this;
     }
 
     public T open(String... args) {
         String url = buildPageUrl(getPageUrlWithParam(args[0]), args);
         driver.get(getDomain() + url);
-        assertUrl();
+        checkPageUrl();
         return (T) this;
     }
 
@@ -100,7 +100,7 @@ public abstract class AbstractPage<T> {
         return "";
     }
 
-    private T assertUrl() {
+    public T checkPageUrl() {
         Class<? extends AbstractPage> clazz = getClass();
         if (clazz.isAnnotationPresent(UrlPattern.class)) {
             UrlPattern annotation = clazz.getAnnotation(UrlPattern.class);
