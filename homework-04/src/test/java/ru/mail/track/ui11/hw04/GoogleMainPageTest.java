@@ -40,6 +40,8 @@ public class GoogleMainPageTest {
                 .open()
                 //Вводим текст в поле поиска
                 .typeSearchText("Hello, World!")
+                //Жмём кнопку ввода
+                .submitInput()
                 //Проверяем открытие страницы с результатами
                 .pageWithSearchShallBeOpened()
                 //Проверяем наличие результатов

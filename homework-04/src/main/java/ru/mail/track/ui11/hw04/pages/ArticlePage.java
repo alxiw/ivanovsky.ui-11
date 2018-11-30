@@ -24,7 +24,7 @@ public class ArticlePage extends AbstractPage<ArticlePage> {
         super(driver);
     }
 
-    public ArticlePage open() {
+    /*public ArticlePage open() {
         Logger.log("Open the page with all articles");
         return super.open();
     }
@@ -32,7 +32,7 @@ public class ArticlePage extends AbstractPage<ArticlePage> {
     public ArticlePage open(String... args) {
         Logger.log("Open the page with economic articles");
         return super.open(args);
-    }
+    }*/
 
     public ArticlePage checkPageUrl() {
         Logger.log("Check address of opened page");

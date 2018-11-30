@@ -9,9 +9,6 @@ import ru.mail.track.ui11.hw04.navigation.Domain;
 import ru.mail.track.ui11.hw04.navigation.PageUrl;
 import ru.mail.track.ui11.hw04.navigation.UrlPattern;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static org.junit.Assert.assertTrue;
 
 @Domain("https://www.google.com")
@@ -19,40 +16,36 @@ import static org.junit.Assert.assertTrue;
 @UrlPattern("/(search\\?(&?.+=[\\w]*[^&])*&?q=([^&]+)(&.*)?)?")
 public class GoogleMainPage extends AbstractPage<GoogleMainPage> {
 
-    @FindBy(css = "input[name='q']")
+    @FindBy(name = "q")
     private WebElement searchInputField;
 
-    @FindBy(css = "div[id='search'] > div > h1")
+    @FindBy(id = "search")
     private WebElement resultHeader;
 
-    @FindBy(css = "div[id='resultStats']")
+    @FindBy(id = "resultStats")
     private WebElement resultStats;
 
-    @FindBy(css = "div[id='navcnt']")
+    @FindBy(id = "navcnt")
     private WebElement resultCounter;
 
     public GoogleMainPage(WebDriver driver) {
         super(driver);
     }
 
-    public GoogleMainPage open() {
+    /*public GoogleMainPage open() {
         Logger.log("Open Google main page");
         return super.open();
-    }
+    }*/
 
     public GoogleMainPage typeSearchText(String text) {
-        Logger.log("Enter \"" + text + "\" in the search field and submit");
+        Logger.log("Enter \"" + text + "\" in the search field");
         searchInputField.sendKeys(text);
-        searchInputField.submit();
         return this;
     }
 
-    public GoogleMainPage pageWithSearchShallBeOpened() {
-        Logger.log("Check address of opened page");
-        Pattern pattern = Pattern.compile(getDomain() + getPageUrlPattern());
-        Matcher matcher = pattern.matcher(driver.getCurrentUrl());
-        assertTrue(String.format("Должна быть открыта страница, содержащая в URL %s",
-                getPageUrl()), matcher.find());
+    public GoogleMainPage submitInput(){
+        Logger.log("Press enter button");
+        searchInputField.submit();
         return this;
     }
 
