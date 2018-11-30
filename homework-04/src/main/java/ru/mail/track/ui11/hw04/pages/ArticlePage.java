@@ -1,7 +1,7 @@
 package ru.mail.track.ui11.hw04.pages;
 
 import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.hw04.log.Logger;
+import ru.mail.track.ui11.hw04.log.TestLogger;
 import ru.mail.track.ui11.hw04.navigation.Domain;
 import ru.mail.track.ui11.hw04.navigation.PageUrl;
 import ru.mail.track.ui11.hw04.navigation.Url;
@@ -24,23 +24,12 @@ public class ArticlePage extends AbstractPage<ArticlePage> {
         super(driver);
     }
 
-    /*public ArticlePage open() {
-        Logger.log("Open the page with all articles");
-        return super.open();
-    }
-
-    public ArticlePage open(String... args) {
-        Logger.log("Open the page with economic articles");
-        return super.open(args);
-    }*/
-
     public ArticlePage checkPageUrl() {
-        Logger.log("Check address of opened page");
+        TestLogger.log("Check address of opened page");
         Pattern pattern = Pattern.compile(getDomain() + "(/[\\w-\\.]*)+");
         Matcher matcher = pattern.matcher(driver.getCurrentUrl());
         assertTrue(String.format("Должна быть открыта страница, содержащая в URL %s",
                 getPageUrl()), matcher.find());
         return this;
     }
-
 }

@@ -46,24 +46,23 @@ public class NameSecretHoroMailPageTest {
     }
 
     @Test
-    public void check_the_ability_to_select_gender(){
+    public void check_the_ability_to_find_name_and_select_gender(){
         new NameSecretHoroMailPage(driver)
                 .open()
                 .typeSearchName("Саша")
-                .openGenderPopUp()
-                .selectGenderInPopUp()
+                .openGenderMenu()
+                .selectGenderInMenu()
                 .submitInput()
                 .clickFirstSuggestedItem()
                 .checkInfoAboutSelectedName();
     }
 
     @Test
-    public void check_letter_button(){
+    public void check_the_ability_to_find_names_by_letter_button(){
         String letter = "М";
         new NameSecretHoroMailPage(driver)
                 .open()
                 .pressLetterButton(letter)
                 .checkActiveLetterButton(letter);
     }
-
 }

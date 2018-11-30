@@ -8,17 +8,8 @@ import ru.mail.track.ui11.hw04.data.BrowserFactory;
 import ru.mail.track.ui11.hw04.drivers.WebDriverFactory;
 import ru.mail.track.ui11.hw04.pages.GoogleMainPage;
 
-/**
- * Автоматизировать следующий сценарий:
- * 1. Открываем страницу https://google.ru
- * 2. Ввести в строку поиска “Hello World”
- * 3. Проверить, что открылась страниица результатов поиска
- * 4. Проверить, что на странице отображаются результаты
- * 5. Проверить, что счетчик результатов больше 0
- *
- * -Dthread.count=1 -Dwebdriver.driver=chrome -Dwebdriver.chrome.driver=/Users/trueman/Documents/java/chromedriver -DforkCount=0 test -f pom.xml
- */
 public class GoogleMainPageTest {
+
     private WebDriver driver = null;
 
     @Before
@@ -32,11 +23,10 @@ public class GoogleMainPageTest {
         driver.quit();
     }
 
-    //Тест проверяет счетчик результатов поиска и выдачу самих результатов
     @Test
     public void type_text_in_search_field_check_counter() {
         new GoogleMainPage(driver)
-                //Открываем главную страницу гугл
+                //Открываем главную страницу Google
                 .open()
                 //Вводим текст в поле поиска
                 .typeSearchText("Hello, World!")

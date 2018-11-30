@@ -23,12 +23,10 @@ public class ArticlePageTest {
         driver.quit();
     }
 
-    //Тест проверяет счетчик результатов поиска и выдачу самих результатов
     @Test
     public void check_url_of_article_page() {
         new ArticlePage(driver)
                 .open("articles", "economic")
                 .checkPageUrl();
     }
-
 }

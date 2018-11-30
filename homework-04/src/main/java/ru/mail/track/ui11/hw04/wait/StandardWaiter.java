@@ -22,5 +22,4 @@ public class StandardWaiter {
             return false;
         }
     }
-
 }

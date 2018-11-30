@@ -9,6 +9,7 @@ import ru.mail.track.ui11.hw04.drivers.WebDriverFactory;
 import ru.mail.track.ui11.hw04.pages.NewsPetsMailPage;
 
 public class NewsPetsMailPageTest {
+
     private WebDriver driver = null;
 
     @Before

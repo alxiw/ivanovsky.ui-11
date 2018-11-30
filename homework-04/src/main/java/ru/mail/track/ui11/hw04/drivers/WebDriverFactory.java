@@ -7,9 +7,6 @@ import ru.mail.track.ui11.hw04.data.BrowsersData;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Конфигурация Selenium WebDriver
- */
 public final class WebDriverFactory {
 
     public static WebDriver getWebDriverInstance(BrowsersData browser) {
@@ -31,8 +28,6 @@ public final class WebDriverFactory {
         chromeOptions.addArguments("--no-first-run");
         chromeOptions.addArguments("--homepage=about:blank");
         chromeOptions.addArguments("--ignore-certificate-errors");
-
         return chromeOptions;
     }
-
 }

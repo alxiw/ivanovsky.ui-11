@@ -1,6 +1,7 @@
 package ru.mail.track.ui11.hw04.data;
 
 public enum BrowsersData {
+
     Chrome("Google Chrome");
 
     private final String name;

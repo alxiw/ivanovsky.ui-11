@@ -4,7 +4,7 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-import ru.mail.track.ui11.hw04.log.Logger;
+import ru.mail.track.ui11.hw04.log.TestLogger;
 import ru.mail.track.ui11.hw04.navigation.*;
 import ru.mail.track.ui11.hw04.wait.StandardWaiter;
 
@@ -39,6 +39,15 @@ public abstract class AbstractPage<T> {
         return (T) this;
     }
 
+    public T pageWithSearchShallBeOpened() {
+        TestLogger.log("Check address of opened page");
+        Pattern pattern = Pattern.compile(getDomain() + getPageUrlPattern());
+        Matcher matcher = pattern.matcher(driver.getCurrentUrl());
+        assertTrue(String.format("Должна быть открыта страница, содержащая в URL %s",
+                getPageUrl()), matcher.find());
+        return (T) this;
+    }
+
     protected String getDomain() {
         Class<? extends AbstractPage> clazz = getClass();
         if (clazz.isAnnotationPresent(Domain.class)) {
@@ -64,15 +73,6 @@ public abstract class AbstractPage<T> {
             return annotation.value();
         }
         return "";
-    }
-
-    public T pageWithSearchShallBeOpened() {
-        Logger.log("Check address of opened page");
-        Pattern pattern = Pattern.compile(getDomain() + getPageUrlPattern());
-        Matcher matcher = pattern.matcher(driver.getCurrentUrl());
-        assertTrue(String.format("Должна быть открыта страница, содержащая в URL %s",
-                getPageUrl()), matcher.find());
-        return (T) this;
     }
 
     private String buildPageUrl(String urlTemplate, String... args){
