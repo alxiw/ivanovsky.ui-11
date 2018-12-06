@@ -1,4 +1,4 @@
-package ru.mail.track.ui11.hw04;
+package ru.mail.track.ui11.hw05.task03;
 
 import org.junit.After;
 import org.junit.Before;
@@ -6,11 +6,10 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import ru.mail.track.ui11.hw04.data.BrowserFactory;
 import ru.mail.track.ui11.hw04.drivers.WebDriverFactory;
-import ru.mail.track.ui11.hw04.pages.NewsPetsMailPage;
 
-public class NewsPetsMailPageTest {
+public class CarsMailPageTest {
 
-    private WebDriver driver = null;
+    private WebDriver driver;
 
     @Before
     public void init() {
@@ -24,13 +23,14 @@ public class NewsPetsMailPageTest {
     }
 
     @Test
-    public void check_show_more_button(){
-        new NewsPetsMailPage(driver)
+    public void open_and_close_cars_mail_popup() {
+        new CarsMailPage(driver)
                 .open()
                 .pageShallBeOpened()
-                .checkNumberOfNewsInList()
-                .pressShowMoreButton()
-                .checkNumberOfNewsInListAfterButtonPressing()
-                .checkNewsAfterButtonPressing();
+                .clickFirstPosAssessment()
+                .popupShallBePresent()
+                .checkPopupTitle()
+                .closePopup()
+                .popupShallBeDisabled();
     }
 }

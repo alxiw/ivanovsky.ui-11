@@ -33,7 +33,7 @@ public class GoogleMainPageTest {
                 //Жмём кнопку ввода
                 .submitInput()
                 //Проверяем открытие страницы с результатами
-                .pageWithSearchShallBeOpened()
+                .pageShallBeOpened()
                 //Проверяем наличие результатов
                 .resultsShallBeShowed()
                 //Проверяем счётчик результатов

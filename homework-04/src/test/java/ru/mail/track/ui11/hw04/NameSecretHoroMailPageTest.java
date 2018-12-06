@@ -27,6 +27,7 @@ public class NameSecretHoroMailPageTest {
     public void check_the_ability_to_find_name(){
         new NameSecretHoroMailPage(driver)
                 .open()
+                .pageShallBeOpened()
                 .typeSearchName("Арина")
                 .submitInput()
                 .clickFirstSuggestedItem()
@@ -37,6 +38,7 @@ public class NameSecretHoroMailPageTest {
     public void check_the_ability_to_find_name_with_popup_suggestions(){
         new NameSecretHoroMailPage(driver)
                 .open()
+                .pageShallBeOpened()
                 .typeSearchName("Арин")
                 .checkSuggestionsInPopUp()
                 .pressSuggestedElementInPopUp()
@@ -49,6 +51,7 @@ public class NameSecretHoroMailPageTest {
     public void check_the_ability_to_find_name_and_select_gender(){
         new NameSecretHoroMailPage(driver)
                 .open()
+                .pageShallBeOpened()
                 .typeSearchName("Саша")
                 .openGenderMenu()
                 .selectGenderInMenu()
@@ -62,6 +65,7 @@ public class NameSecretHoroMailPageTest {
         String letter = "М";
         new NameSecretHoroMailPage(driver)
                 .open()
+                .pageShallBeOpened()
                 .pressLetterButton(letter)
                 .checkActiveLetterButton(letter);
     }

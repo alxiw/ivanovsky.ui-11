@@ -2,13 +2,19 @@ package ru.mail.track.ui11.hw04.pages;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
+import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.mail.track.ui11.hw04.log.TestLogger;
 import ru.mail.track.ui11.hw04.navigation.*;
 import ru.mail.track.ui11.hw04.wait.StandardWaiter;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,8 +45,7 @@ public abstract class AbstractPage<T> {
         return (T) this;
     }
 
-    public T pageWithSearchShallBeOpened() {
-        TestLogger.log("Check address of opened page");
+    public T pageShallBeOpened() {
         Pattern pattern = Pattern.compile(getDomain() + getPageUrlPattern());
         Matcher matcher = pattern.matcher(driver.getCurrentUrl());
         assertTrue(String.format("Должна быть открыта страница, содержащая в URL %s",
