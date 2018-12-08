@@ -5,32 +5,29 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import ru.mail.track.ui11.hw04.navigation.Domain;
-import ru.mail.track.ui11.hw04.navigation.PageUrl;
-import ru.mail.track.ui11.hw04.navigation.UrlPattern;
-import ru.mail.track.ui11.hw04.pages.AbstractPage;
+import ru.mail.track.ui11.seleniumtestcore.navigation.*;
+import ru.mail.track.ui11.seleniumtestcore.AbstractPage;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
-@UrlPattern("/prognoz/easter_island/[\\d]{1,2}-[\\w]{1,10}/#[\\d]{4}")
-@PageUrl("/prognoz/easter_island/10-june/#2015")
+@UrlPattern("/prognoz/[\\w_\\-]{1,40}/[\\d]{1,2}-[\\w_-]{1,10}/#[\\d]{4}")
+@UrlParam({
+        @Url(name = "prognoz", url = "/prognoz/%1/%2/#%3")
+})
 @Domain("https://pogoda.mail.ru")
 public class CalendarPogodaMailPage extends AbstractPage<CalendarPogodaMailPage> {
 
-    @FindBy(xpath = "//div[contains(text(), 'Календарь')]")
+    @FindBy(xpath = "//div[contains(text(), 'Календарь погоды')]")
     private WebElement calendar;
 
-    @FindBy(xpath = "//span[contains(@class, 'calendar__month')]")
-    private WebElement calendarMonth;
-
-    @FindBy(xpath = "//span[contains(@class, 'calendar__control_prev')]")
-    private WebElement prevMonth;
-
-    @FindBy(xpath = "//span[contains(@class, 'calendar__control_next')]")
-    private WebElement nextMonth;
-
-    @FindBy(xpath = "//div[contains(@class, 'heading heading_minor heading_line')]")
+    @FindBy(xpath = "//div[contains(@class, 'block')]/following-sibling::div[contains(@class, 'block')]//div[contains(@class, 'heading')]")
     private List<WebElement> daysHeaders;
+
+    private final String monthPath = "//div[contains(@class, 'calendar-popup')]//span[contains(@class, 'calendar__month')]";
 
     public CalendarPogodaMailPage(WebDriver driver) {
         super(driver);
@@ -41,36 +38,31 @@ public class CalendarPogodaMailPage extends AbstractPage<CalendarPogodaMailPage>
         return this;
     }
 
-    public CalendarPogodaMailPage checkMonthInCalendar(String month) {
-        Assert.assertEquals("Неверный месяц в календаре", month, calendarMonth.getText());
+    public CalendarPogodaMailPage checkMonthInCalendar(Month month) {
+        WebElement monthElement = driver.findElement(By.xpath(monthPath));
+        String expected = month.getDisplayName(TextStyle.FULL, new Locale("ru")).substring(0, 3).toUpperCase();
+        String actual = monthElement.getText().substring(0, 3).toUpperCase();
+        Assert.assertEquals("Неверный месяц в календаре", expected, actual);
         return this;
     }
 
-    public CalendarPogodaMailPage goToPrevMonth() {
-        prevMonth.click();
-        return this;
-    }
-
-    public CalendarPogodaMailPage goToNextMonth() {
-        nextMonth.click();
+    public CalendarPogodaMailPage navigate(NavigateButton button) {
+        String pathToNavigateButton = String.format("//span[contains(@class, 'calendar__control_%s')]", button.getName().toLowerCase());
+        driver.findElement(By.xpath(pathToNavigateButton)).click();
         return this;
     }
 
     public CalendarPogodaMailPage goToDay(int day) {
-        driver.findElement(By.xpath("//table[contains(@class, 'calendar')]//a[text() = '" + day + "']")).click();
+        driver.findElement(By.xpath(String.format("//table[contains(@class, 'calendar')]//a[text() = '%d']", day))).click();
         return this;
     }
 
-    public CalendarPogodaMailPage checkDayInList(String month, int day) {
-        String firstThreeLettersOfMonthName = month.substring(0, 3).toUpperCase();
-        String regex = day + "\\s" + firstThreeLettersOfMonthName + "\\W*\\s\\d{4}";
-        Assert.assertTrue("Несовпадение месяца в календаре и списке",
-                        daysHeaders.stream()
-                                .map(WebElement::getText)
+    public CalendarPogodaMailPage checkDayInList(LocalDate date) {
+        String month = date.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru")).substring(0, 3).toUpperCase();
+        String regex = String.format("^%d\\s%s.+\\s\\d{4}$", date.getDayOfMonth(), month);
+        Assert.assertTrue("Несовпадение даты в списке",
+                        daysHeaders.stream().map(WebElement::getText)
                                 .allMatch(elem -> elem.matches(regex)));
         return this;
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package ru.mail.track.ui11.hw05.task05;
+package ru.mail.track.ui11.hw04.task04;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,9 +7,9 @@ import org.openqa.selenium.WebDriver;
 import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
 import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
 
-public class ArticlePetsMailPageTest {
+public class ArticlePageTest {
 
-    private WebDriver driver;
+    private WebDriver driver = null;
 
     @Before
     public void init() {
@@ -17,15 +17,16 @@ public class ArticlePetsMailPageTest {
     }
 
     @After
-    public void killSession() {
+    public void killBrowser() {
         driver.close();
         driver.quit();
     }
 
     @Test
-    public void check_existence_of_publication_date() {
-        new ArticlePetsMailPage(driver)
-                .open()
-                .checkExistenceOfPublicationTime();
+    public void check_url_of_article_page() {
+        new ArticlePage(driver)
+                .open("articles", "some")
+                .open("articles-economic", "64")
+                .open("prognoz", "boston", "4-july", "1970", "full");
     }
 }

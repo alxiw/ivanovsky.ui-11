@@ -26,16 +26,16 @@
         <useUnlimitedThreads>true</useUnlimitedThreads>
         <thread.count>10</thread.count>
 
-        <webdriver.base.url>https://www.google.com</webdriver.base.url>
+        <!--<webdriver.base.url></webdriver.base.url>-->
+        <!--<webdriver.chrome.driver></webdriver.chrome.driver>-->
         <webdriver.driver>chrome</webdriver.driver>
-        <webdriver.chrome.driver>/Users/trueman/chromedriver/chromedriver</webdriver.chrome.driver>
         <webdriver.timeouts.implicitlywait>5000</webdriver.timeouts.implicitlywait>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>ru.mail.track.ui11</groupId>
-            <artifactId>homework-04</artifactId>
+            <artifactId>selenium-test-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -86,9 +86,9 @@
                     <threadCountMethods>${thread.count}</threadCountMethods>
                     <argLine> -Xms512m -Xmx1024m -Dfile.encoding=UTF-8</argLine>
                     <systemPropertyVariables>
-                        <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
+                        <!--<webdriver.base.url>${webdriver.base.url}</webdriver.base.url>-->
+                        <!--<webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>-->
                         <webdriver.driver>${webdriver.driver}</webdriver.driver>
-                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
                         <webdriver.timeouts.implicitlywait>${webdriver.timeouts.implicitlywait}</webdriver.timeouts.implicitlywait>
                     </systemPropertyVariables>
                 </configuration>

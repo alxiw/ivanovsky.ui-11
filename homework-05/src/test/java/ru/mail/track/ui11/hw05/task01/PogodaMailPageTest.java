@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.hw04.data.BrowserFactory;
-import ru.mail.track.ui11.hw04.drivers.WebDriverFactory;
+import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
+import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
 
 public class PogodaMailPageTest {
 
@@ -26,16 +26,15 @@ public class PogodaMailPageTest {
     public void add_city_in_favorites() {
         new PogodaMailPage(driver)
                 .open()
-                .pageShallBeOpened()
-                .cityDropdownShouldBeNotPresent()
+                .cityDropdownShallBeNotPresent()
                 .moveCursorToCityButton()
-                .cityDropdownShouldBeNotPresent()
-                .typeSearchText("Киев")
-                .suggestShouldBeEnabled()
-                .pressCity()
+                .cityDropdownShallBePresent()
+                .typeSearchText("Берлин")
+                .suggestShallBeEnabled()
+                .pressFirstSuggestedCity()
                 .pageWithForecastShouldBeOpen()
                 .addCityToFavorites()
                 .moveCursorToCityButton()
-                .cityShouldBePresented();
+                .cityShouldBePresentedInDropdown();
     }
 }

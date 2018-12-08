@@ -5,20 +5,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import ru.mail.track.ui11.hw04.navigation.Domain;
-import ru.mail.track.ui11.hw04.navigation.PageUrl;
-import ru.mail.track.ui11.hw04.navigation.UrlPattern;
-import ru.mail.track.ui11.hw04.pages.AbstractPage;
+import ru.mail.track.ui11.seleniumtestcore.navigation.*;
+import ru.mail.track.ui11.seleniumtestcore.AbstractPage;
 
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 
-@UrlPattern("/catalog/ford/focus/.*")
-@PageUrl("/catalog/ford/focus/iii_restailing/sedan/")
+@UrlPattern("/catalog/[\\w_\\-]+/[\\w_\\-]+/[\\w_\\-]+/[\\w_\\-]+/")
+@UrlParam({
+        @Url(name = "catalog", url = "/catalog/%1/%2/%3/%4")
+})
 @Domain("https://auto.mail.ru")
 public class CarsMailPage extends AbstractPage<CarsMailPage> {
 
-    @FindBy(xpath = "//a[@data-type-tag = 'plus']")
+    @FindBy(xpath = "//span[contains(text(), 'Плюсы')]/following::span[contains(text(), 'Управляемость')][1]")
     private WebElement assessmentElement;
 
     @FindBy(xpath = "//div[contains(@class,'popup__wrapper')]/div/span[contains(@class, 'text')]")
@@ -37,7 +37,7 @@ public class CarsMailPage extends AbstractPage<CarsMailPage> {
 
     public CarsMailPage clickFirstPosAssessment() {
         assessmentElement.click();
-        assessment = assessmentElement.findElement(By.xpath("//span[contains(@class, 'link__text margin_right_5')]")).getText();
+        assessment = assessmentElement.getText();
         return this;
     }
 
@@ -49,7 +49,7 @@ public class CarsMailPage extends AbstractPage<CarsMailPage> {
     }
 
     public CarsMailPage checkPopupTitle() {
-        assertTrue("Заголовок выпадающего окна не содержит названия параметра \"" + assessment + "\"",
+        assertTrue(String.format("Заголовок выпадающего окна не содержит названия параметра \"%s\"", assessment),
                 popupTitle.getText().contains(assessment));
         return this;
     }

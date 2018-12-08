@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.hw04.data.BrowserFactory;
-import ru.mail.track.ui11.hw04.drivers.WebDriverFactory;
+import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
+import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
 
 public class SportMailPageTest {
 
@@ -23,10 +23,12 @@ public class SportMailPageTest {
     }
 
     @Test
-    public void check_error_on_sport_page(){
+    public void check_error_on_news_sport_page() {
         new SportMailPage(driver)
                 .open()
-                .pageShallBeOpened()
+                .checkAbsenceOfErrorTextOnPage();
+        new NewsSportMailPage(driver)
+                .open()
                 .checkAbsenceOfErrorTextOnPage();
     }
 }

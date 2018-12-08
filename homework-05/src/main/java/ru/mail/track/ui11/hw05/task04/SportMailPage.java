@@ -1,20 +1,12 @@
 package ru.mail.track.ui11.hw05.task04;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import ru.mail.track.ui11.hw04.navigation.Domain;
-import ru.mail.track.ui11.hw04.navigation.PageUrl;
-import ru.mail.track.ui11.hw04.navigation.UrlPattern;
-import ru.mail.track.ui11.hw04.pages.AbstractPage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import ru.mail.track.ui11.seleniumtestcore.navigation.Domain;
+import ru.mail.track.ui11.seleniumtestcore.navigation.PageUrl;
+import ru.mail.track.ui11.seleniumtestcore.navigation.UrlPattern;
+import ru.mail.track.ui11.seleniumtestcore.AbstractPage;
 
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
