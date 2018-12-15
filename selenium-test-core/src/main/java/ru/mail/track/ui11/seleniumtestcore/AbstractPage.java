@@ -88,7 +88,7 @@ public abstract class AbstractPage<T> {
         return "";
     }
 
-    private void checkPageUrl() {
+    protected void checkPageUrl() {
         Class<? extends AbstractPage> clazz = getClass();
         if (clazz.isAnnotationPresent(UrlPattern.class)) {
             UrlPattern annotation = clazz.getAnnotation(UrlPattern.class);

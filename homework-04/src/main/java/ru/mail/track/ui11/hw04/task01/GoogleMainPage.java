@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 @Domain("https://www.google.com")
 public class GoogleMainPage extends AbstractPage<GoogleMainPage> {
 
-    TestLogger logger = new TestLogger();
+    private final TestLogger logger = new TestLogger();
 
     @FindBy(name = "q")
     private WebElement searchInputField;

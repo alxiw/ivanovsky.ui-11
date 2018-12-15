@@ -4,9 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import ru.mail.track.ui11.seleniumtestcore.navigation.Domain;
-import ru.mail.track.ui11.seleniumtestcore.navigation.PageUrl;
-import ru.mail.track.ui11.seleniumtestcore.navigation.UrlPattern;
+import ru.mail.track.ui11.seleniumtestcore.navigation.*;
 import ru.mail.track.ui11.seleniumtestcore.AbstractPage;
 
 import java.util.regex.Matcher;
@@ -15,7 +13,9 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.assertTrue;
 
 @UrlPattern("/how-to/[\\w_\\-]+/")
-@PageUrl("/how-to/nyanya-dlya-sobak-i-koshek-kak-podgotovitsya-k-raz/")
+@UrlParam({
+        @Url(name = "how-to", url = "/how-to/%1/")
+})
 @Domain("https://pets.mail.ru")
 public class ArticlePetsMailPage extends AbstractPage<ArticlePetsMailPage> {
 

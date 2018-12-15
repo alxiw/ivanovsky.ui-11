@@ -5,11 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import ru.mail.track.ui11.hw04.task03.enumeration.Gender;
 import ru.mail.track.ui11.seleniumtestcore.AbstractPage;
 import ru.mail.track.ui11.seleniumtestcore.log.TestLogger;
-import ru.mail.track.ui11.seleniumtestcore.navigation.Domain;
-import ru.mail.track.ui11.seleniumtestcore.navigation.PageUrl;
-import ru.mail.track.ui11.seleniumtestcore.navigation.UrlPattern;
+import ru.mail.track.ui11.seleniumtestcore.navigation.*;
 
 import java.util.List;
 
@@ -20,103 +19,121 @@ import static org.junit.Assert.assertTrue;
 @Domain("https://horo.mail.ru")
 public class NameSecretHoroMailPage extends AbstractPage<NameSecretHoroMailPage> {
 
-    TestLogger logger = new TestLogger();
+    private final TestLogger logger = new TestLogger();
+
+    private String letter;
+    private String name;
 
     @FindBy(name = "q")
-    private WebElement nameInputField;
+    private WebElement inputField;
 
-    @FindBy(name = "g")
-    private WebElement genderList;
+    @FindBy(xpath = "//*[@data-module='CustomSelect']")
+    private WebElement genderMenu;
 
-    @FindBy(css = "[class='filter__item']")
-    private List<WebElement> letterButton;
+    @FindBy(xpath = "//button/descendant::*[text()='Узнать тайну имени']")
+    private WebElement submitButton;
 
-    @FindBy(css = "[class='suggest__inner js-suggest__render'")
-    private WebElement suggestMenu;
-
-    private String suggestNamesLocator = "//div[@class='newsitem newsitem_vertical newsitem_special newsitem_border_bottom']";
-    private String nameInfoElement = "//div[@class='newsitem newsitem_vertical newsitem_namesecret']";
-    private String letterOpenButtonSelector = "[class='filter__item filter__item_active']";
-    private String suggestElementLocator = "//div[@class ='suggest__item js-suggest__item']";
-    private String genderSelectLocator = "//div[@class ='dropdown dropdown_scrollable dropdown_scrollable dropdown_scrollable js-select js-module']";
-    private String genderListLocator = "//div[@class ='suggest__inner js-select__options__list js-scrollable__view dropdown__scroll']";
+    private final String letterSelectorFormat = "//div[contains(@class, 'filter')]/descendant::*[contains(@class, 'item')]/*[text()='%s']";
+    private final String namesSelectorFormat = "//div[contains(@class, 'p-terms-list')]//*[contains(text(), '%s')]";
+    private final String cellWithNameSelectorFormat = "//div[contains(@class, 'newsitem')]/descendant::*[contains(text(), '%s')]/ancestor::span[@class='cell']";
+    private final String cellNameFromCellSelector = "a/span";
+    private final String suggestionsSelector = "//*[@name='q']/ancestor::*[contains(@class, 'input')]/following-sibling::*//*[contains(@class, 'item')]";
+    private final String gendersSelector = "//*[@data-module='CustomSelect']//div[contains(@class, 'item')]";
 
     public NameSecretHoroMailPage(WebDriver driver) {
         super(driver);
     }
 
-    public NameSecretHoroMailPage typeSearchName(String text) {
-        logger.log("Enter \"" + text + "\" in the search field");
-        nameInputField.sendKeys(text);
+    public NameSecretHoroMailPage clickLetter(String letter) {
+        letter = letter.toUpperCase();
+        logger.log("Click the letter \"" + letter + "\"");
+        assertTrue("Буквы \"" + letter + "\" нет на странице",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath(String.format(letterSelectorFormat, letter)))));
+        driver.findElement(By.xpath(String.format(letterSelectorFormat, letter))).click();
+        this.letter = letter;
+        return this;
+    }
+
+    public NameSecretHoroMailPage checkPresenceOfNamesStartsWithChosenLetter() {
+        logger.log("Check activity of button with chosen letter \"" + letter + "\"");
+        assertTrue(String.format("Имена на букву \"%s\" отсутствуют", letter),
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .visibilityOfAllElementsLocatedBy(By.xpath(String.format(namesSelectorFormat, letter)))));
+        return this;
+    }
+
+    public NameSecretHoroMailPage enterNameInInputField(String name) {
+        logger.log("Enter \"" + name + "\" in the search field");
+        assertTrue("Поле для ввода имени не отображается на странице",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .visibilityOf(inputField)));
+        inputField.sendKeys(name);
+        this.name = name;
         return this;
     }
 
     public NameSecretHoroMailPage submitInput() {
-        logger.log("Press enter button");
-        nameInputField.submit();
-        return this;
-    }
-
-    public NameSecretHoroMailPage clickFirstSuggestedItem() {
-        logger.log("Choose first suggested name");
-        List<WebElement> suggestElements = driver.findElements(By.xpath(suggestNamesLocator));
-        assertTrue("В выпадающем меню должна быть возможность выбора имён", !suggestElements.isEmpty());
-        suggestElements.get(0).click();
-        return this;
-    }
-
-    public NameSecretHoroMailPage checkInfoAboutSelectedName() {
-        logger.log("Check availability of information about suggested name");
-        assertTrue("Должна появиться информация об имени",
-                standardWaiter.waitForCondition(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(nameInfoElement))));
-        return this;
-    }
-
-    public NameSecretHoroMailPage pressLetterButton(String letter) {
-        logger.log("Press the button with letter \"" + letter + "\"");
-        letterButton.stream()
-                .filter(button -> button.getText().equals(letter))
-                .findFirst().ifPresent(WebElement::click);
-        return this;
-    }
-
-    public NameSecretHoroMailPage checkActiveLetterButton(String letter) {
-        logger.log("Check activity of button with chosen letter \"" + letter + "\"");
-        assertTrue(String.format("Должен быть выбран список имен начинающихся с буквы \"%s\"", letter),
+        logger.log("Press submit button");
+        assertTrue("Кнопка не отображается на странице",
                 standardWaiter.waitForCondition(ExpectedConditions
-                        .textToBe(By.cssSelector(letterOpenButtonSelector), letter)));
+                        .visibilityOf(submitButton)));
+        submitButton.click();
         return this;
     }
 
-    public NameSecretHoroMailPage checkSuggestionsInPopUp() {
-        logger.log("Check availability of suggestions in popup");
-        assertTrue("Должно появиться выпадающее меню",
+    public NameHoroMailPage clickItemCompletelyMatchesTheName() {
+        logger.log("Click found name which completely matches entered name");
+        assertTrue("Имя отсутствует среди результатов",
                 standardWaiter.waitForCondition(ExpectedConditions
-                        .visibilityOf(suggestMenu)));
-        return this;
+                        .elementToBeClickable(By.xpath(String.format(cellWithNameSelectorFormat, name)))));
+        List<WebElement> cells = driver.findElements(By.xpath(String.format(cellWithNameSelectorFormat, name)));
+        for (WebElement cell : cells) {
+            if (cell.findElement(By.xpath(cellNameFromCellSelector)).getText().toLowerCase().startsWith(name.toLowerCase())) {
+                cell.click();
+                return new NameHoroMailPage(driver, name);
+            }
+        }
+        WebElement cell = cells.get(0);
+        name = cell.findElement(By.xpath(cellNameFromCellSelector)).getText();
+        cell.click();
+        return new NameHoroMailPage(driver, name);
     }
 
-    public NameSecretHoroMailPage pressSuggestedElementInPopUp() {
+    public NameHoroMailPage clickName(String name) {
+        logger.log(String.format("Click name \"%s\"", name));
+        assertTrue("Имя отсутствует среди результатов",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .elementToBeClickable(By.xpath(String.format(namesSelectorFormat, name)))));
+        driver.findElement(By.xpath(String.format(namesSelectorFormat, name))).click();
+        return new NameHoroMailPage(driver, name);
+    }
+
+    public NameSecretHoroMailPage clickFirstElementStartsWithEnteredNameInSuggestions() {
         logger.log("Press suggested name in popup");
-        List<WebElement> suggestElements = driver.findElements(By.xpath(suggestElementLocator));
-        assertTrue("В выпадающем меню должна быть возможность выбора имён", !suggestElements.isEmpty());
-        suggestElements.get(0).click();
+        assertTrue("Предложения при вводе не отображаются",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .visibilityOfAllElementsLocatedBy(By.xpath(suggestionsSelector))));
+        List<WebElement> suggestElements = driver.findElements(By.xpath(suggestionsSelector));
+        suggestElements.stream().filter(element -> element.getText().toLowerCase().startsWith(name.toLowerCase())).findFirst().ifPresent(WebElement::click);
         return this;
     }
 
     public NameSecretHoroMailPage openGenderMenu() {
-        logger.log("Check activity of gender menu");
-        driver.findElement(By.xpath(genderSelectLocator)).click();
-        assertTrue("Меню выбора пола должно появиться",
+        logger.log("Open gender menu");
+        assertTrue("Меню выбора пола невозможно открыть",
                 standardWaiter.waitForCondition(ExpectedConditions
-                        .presenceOfElementLocated(By.xpath(genderListLocator))));
+                        .elementToBeClickable(genderMenu)));
+        genderMenu.click();
         return this;
     }
 
-    public NameSecretHoroMailPage selectGenderInMenu(String gender) {
-        logger.log("Select gender in menu");
-        String womanSelectElementLocator = String.format("//div[@class ='suggest__item js-select__options__item' and text()='%s']", gender);
-        driver.findElement(By.xpath(womanSelectElementLocator)).click();
+    public NameSecretHoroMailPage selectGender(Gender gender) {
+        logger.log("Select gender in the menu");
+        assertTrue("Меню выбора пола невозможно открыть",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .presenceOfAllElementsLocatedBy(By.xpath(gendersSelector))));
+        driver.findElements(By.xpath(gendersSelector)).stream().filter(element -> element.getText().equalsIgnoreCase(gender.getName())).findFirst().ifPresent(WebElement::click);
         return this;
     }
 }

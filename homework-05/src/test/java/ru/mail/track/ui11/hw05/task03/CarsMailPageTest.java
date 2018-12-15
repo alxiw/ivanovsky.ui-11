@@ -1,35 +1,20 @@
 package ru.mail.track.ui11.hw05.task03;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
-import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
+import ru.mail.track.ui11.hw05.BaseTest;
+import ru.mail.track.ui11.hw05.task03.enumeration.*;
 
-public class CarsMailPageTest {
-
-    private WebDriver driver;
-
-    @Before
-    public void init() {
-        driver = WebDriverFactory.getWebDriverInstance(BrowserFactory.getBrowser(System.getProperty("webdriver.driver")));
-    }
-
-    @After
-    public void killSession() {
-        driver.close();
-        driver.quit();
-    }
+public class CarsMailPageTest extends BaseTest {
 
     @Test
-    public void open_and_close_cars_mail_popup() {
+    public void check_accessibility_of_popup_with_car_assessment() {
         new CarsMailPage(driver)
-                .open("catalog", "ford", "focus", "iii_restailing", "sedan")
-                .clickFirstPosAssessment()
+                .open("catalog", UrlCarVendor.FORD.getName(), UrlCarModel.FOCUS.getName(), UrlCarGeneration.THIRD_RS.getName(), UrlCarType.SEDAN.getName())
+                .checkThatThereAreNoOnePopupOnThePage()
+                .clickAssessment(Assessement.PROS, "Управляемость")
                 .popupShallBePresent()
                 .checkPopupTitle()
                 .closePopup()
-                .popupShallBeDisabled();
+                .checkThatThePopupIsClosed();
     }
 }

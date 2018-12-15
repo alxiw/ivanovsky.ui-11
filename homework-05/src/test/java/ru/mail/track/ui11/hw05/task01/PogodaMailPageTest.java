@@ -1,40 +1,23 @@
 package ru.mail.track.ui11.hw05.task01;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
-import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
+import ru.mail.track.ui11.hw05.BaseTest;
 
-public class PogodaMailPageTest {
-
-    private WebDriver driver;
-
-    @Before
-    public void init() {
-        driver = WebDriverFactory.getWebDriverInstance(BrowserFactory.getBrowser(System.getProperty("webdriver.driver")));
-    }
-
-    @After
-    public void killSession() {
-        driver.close();
-        driver.quit();
-    }
+public class PogodaMailPageTest extends BaseTest {
 
     @Test
-    public void add_city_in_favorites() {
-        new PogodaMailPage(driver)
+    public void check_adding_city_to_favorites() {
+        new DefaultCityPogodaMailPage(driver)
                 .open()
-                .cityDropdownShallBeNotPresent()
-                .moveCursorToCityButton()
-                .cityDropdownShallBePresent()
+                .moveCursorToCityDropdown()
+                .checkCurrentCity()
+                .onlyCurrentCityShallBeInFavorites()
                 .typeSearchText("Берлин")
-                .suggestShallBeEnabled()
-                .pressFirstSuggestedCity()
-                .pageWithForecastShouldBeOpen()
+                .clickFirstSuggestedCity()
+                .moveCursorToCityDropdown()
+                .checkCurrentCity()
                 .addCityToFavorites()
-                .moveCursorToCityButton()
-                .cityShouldBePresentedInDropdown();
+                .moveCursorToCityDropdown()
+                .cityShallBePresentedInDropdown();
     }
 }

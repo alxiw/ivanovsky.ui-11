@@ -1,31 +1,15 @@
 package ru.mail.track.ui11.hw05.task05;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
-import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
+import ru.mail.track.ui11.hw05.BaseTest;
+import ru.mail.track.ui11.hw05.task05.enumeration.Article;
 
-public class ArticlePetsMailPageTest {
-
-    private WebDriver driver;
-
-    @Before
-    public void init() {
-        driver = WebDriverFactory.getWebDriverInstance(BrowserFactory.getBrowser(System.getProperty("webdriver.driver")));
-    }
-
-    @After
-    public void killSession() {
-        driver.close();
-        driver.quit();
-    }
+public class ArticlePetsMailPageTest extends BaseTest {
 
     @Test
-    public void check_existence_of_publication_date() {
+    public void check_that_an_article_have_a_date_of_publication() {
         new ArticlePetsMailPage(driver)
-                .open()
+                .open("how-to", Article.RAZ.getName())
                 .checkExistenceOfPublicationTime();
     }
 }

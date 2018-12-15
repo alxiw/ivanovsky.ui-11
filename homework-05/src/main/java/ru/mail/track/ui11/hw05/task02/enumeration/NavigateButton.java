@@ -1,4 +1,4 @@
-package ru.mail.track.ui11.hw05.task02;
+package ru.mail.track.ui11.hw05.task02.enumeration;
 
 public enum NavigateButton {
 

@@ -1,67 +1,51 @@
 package ru.mail.track.ui11.hw04.task03;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import ru.mail.track.ui11.seleniumtestcore.data.BrowserFactory;
-import ru.mail.track.ui11.seleniumtestcore.drivers.WebDriverFactory;
+import ru.mail.track.ui11.hw04.BaseTest;
+import ru.mail.track.ui11.hw04.task03.enumeration.Gender;
 
-public class NameSecretHoroMailPageTest {
-
-    private WebDriver driver = null;
-
-    @Before
-    public void init() {
-        driver = WebDriverFactory.getWebDriverInstance(BrowserFactory.getBrowser(System.getProperty("webdriver.driver")));
-    }
-
-    @After
-    public void killSession() {
-        driver.close();
-        driver.quit();
-    }
+public class NameSecretHoroMailPageTest extends BaseTest {
 
     @Test
-    public void check_the_ability_to_find_name(){
+    public void check_search_names_by_letter(){
         new NameSecretHoroMailPage(driver)
                 .open()
-                .typeSearchName("Арина")
-                .submitInput()
-                .clickFirstSuggestedItem()
+                .clickLetter("м")
+                .checkPresenceOfNamesStartsWithChosenLetter()
+                .clickName("Моисей")
                 .checkInfoAboutSelectedName();
     }
 
     @Test
-    public void check_the_ability_to_find_name_with_popup_suggestions(){
+    public void check_search_the_name_directly(){
         new NameSecretHoroMailPage(driver)
                 .open()
-                .typeSearchName("Арин")
-                .checkSuggestionsInPopUp()
-                .pressSuggestedElementInPopUp()
+                .enterNameInInputField("Арина")
                 .submitInput()
-                .clickFirstSuggestedItem()
+                .clickItemCompletelyMatchesTheName()
                 .checkInfoAboutSelectedName();
     }
 
     @Test
-    public void check_the_ability_to_find_name_and_select_gender(){
+    public void check_search_the_name_using_suggestions(){
         new NameSecretHoroMailPage(driver)
                 .open()
-                .typeSearchName("Саша")
+                .enterNameInInputField("Арин")
+                .clickFirstElementStartsWithEnteredNameInSuggestions()
+                .submitInput()
+                .clickItemCompletelyMatchesTheName()
+                .checkInfoAboutSelectedName();
+    }
+
+    @Test
+    public void check_search_the_name_by_gender(){
+        new NameSecretHoroMailPage(driver)
+                .open()
+                .enterNameInInputField("Саша")
                 .openGenderMenu()
-                .selectGenderInMenu("Женские")
+                .selectGender(Gender.FEMALE)
                 .submitInput()
-                .clickFirstSuggestedItem()
+                .clickItemCompletelyMatchesTheName()
                 .checkInfoAboutSelectedName();
-    }
-
-    @Test
-    public void check_the_ability_to_find_names_by_letter_button(){
-        String letter = "М";
-        new NameSecretHoroMailPage(driver)
-                .open()
-                .pressLetterButton(letter)
-                .checkActiveLetterButton(letter);
     }
 }

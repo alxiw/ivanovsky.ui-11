@@ -11,6 +11,7 @@ import ru.mail.track.ui11.seleniumtestcore.navigation.Domain;
 import ru.mail.track.ui11.seleniumtestcore.navigation.PageUrl;
 import ru.mail.track.ui11.seleniumtestcore.navigation.UrlPattern;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -20,54 +21,55 @@ import static org.junit.Assert.assertTrue;
 @Domain("https://pets.mail.ru")
 public class NewsPetsMailPage extends AbstractPage<NewsPetsMailPage> {
 
-    TestLogger logger = new TestLogger();
+    private final TestLogger logger = new TestLogger();
 
-    private List<WebElement> newsList = null;
-    private List<WebElement> newsListAfterPressShowMore = null;
+    private final List<List<WebElement>> storage = new ArrayList<>();
 
-    @FindBy(css = "[class='pypo-item js-pgng_item']")
-    private WebElement newsField;
+    @FindBy(xpath = "//button/descendant::*[text()='Показать еще']")
+    private WebElement expandButton;
 
-    private String newsFieldSelector = "[class='pypo-item js-pgng_item']";
-    private String showMoreButtonSelector = "[class='button js-pgng_more_link']";
+    private final String newsItemSelector = "//div[contains(@class, 'item')]/descendant::*[text()='Новости']";
 
     public NewsPetsMailPage(WebDriver driver) {
         super(driver);
     }
 
-    private List<WebElement> getNewsList() {
-        logger.log("Receive list of news");
-        return driver.findElements(By.cssSelector(newsFieldSelector));
-    }
-
-    public NewsPetsMailPage checkNumberOfNewsInList() {
-        logger.log("Check size of news list");
-        assertTrue("Новости должны отображаться на странице",
-                standardWaiter.waitForCondition(ExpectedConditions.visibilityOf(newsField)));
-        newsList = getNewsList();
-        return this;
-    }
-
-    public NewsPetsMailPage pressShowMoreButton() {
-        logger.log("Press button \"Show More\"");
-        driver.findElement(By.cssSelector(showMoreButtonSelector)).click();
-        return this;
-    }
-
-    public NewsPetsMailPage checkNumberOfNewsInListAfterButtonPressing() {
-        logger.log("Check size of changed news list");
-        assertTrue("Количество новостей должно измениться",
+    public NewsPetsMailPage captureInitialNewsItems() {
+        logger.log("Check presence news grid on the page and capture initial news items");
+        assertTrue("Новости не отображаются на странице",
                 standardWaiter.waitForCondition(ExpectedConditions
-                        .numberOfElementsToBeMoreThan(By.cssSelector(newsFieldSelector),
-                                newsList.size())));
-        newsListAfterPressShowMore = getNewsList();
+                        .visibilityOfAllElementsLocatedBy(By.xpath(newsItemSelector))));
+        storage.add(fetchNewsItems());
         return this;
     }
 
-    public NewsPetsMailPage checkNewsAfterButtonPressing() {
-        logger.log("Compare two news lists");
-        newsListAfterPressShowMore = getNewsList();
-        assertTrue(newsListAfterPressShowMore.containsAll(newsList));
+    public NewsPetsMailPage pressExpandButton() {
+        logger.log("Press expand button");
+        assertTrue("Кнопка не отображается на странице",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .visibilityOf(expandButton)));
+        expandButton.click();
         return this;
+    }
+
+    public NewsPetsMailPage captureNewsItemsAfterExpansion() {
+        logger.log("Capture news items on the page after expansion");
+        assertTrue("Количество новостей не изменилось",
+                standardWaiter.waitForCondition(ExpectedConditions
+                        .numberOfElementsToBeMoreThan(By.xpath(newsItemSelector),
+                                storage.get(0).size())));
+        storage.add(fetchNewsItems());
+        return this;
+    }
+
+    public NewsPetsMailPage checkThatNumberOfNewsItemsIncreased() {
+        logger.log("Check that former news not miss from the page");
+        assertTrue("Старые новости отсутствуют на странице",
+                storage.get(1).containsAll(storage.get(0)));
+        return this;
+    }
+
+    private List<WebElement> fetchNewsItems() {
+        return driver.findElements(By.xpath(newsItemSelector));
     }
 }
