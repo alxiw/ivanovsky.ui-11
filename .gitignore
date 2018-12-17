@@ -4,19 +4,11 @@
 
 # Target folder and compiled class and package files
 /**/target
-*.class
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
 
-# Test and log files
+# Test and log folders and files
+/**/allure-results
+/**/build
 *.log
-*.bat
-*.key
 *.csv
 *.txt
 
