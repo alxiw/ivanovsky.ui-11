@@ -14,8 +14,9 @@
         <module>homework-03</module>
         <module>homework-04</module>
         <module>homework-05</module>
-        <module>selenium-test-core</module>
         <module>homework-06</module>
+        <module>homework-07</module>
+        <module>selenium-test-core</module>
         <module>selenide-test-core</module>
     </modules>
     <packaging>pom</packaging>
