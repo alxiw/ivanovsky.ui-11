@@ -8,7 +8,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name= "ru.mail.track.ui11.hw04.log.TestLogger" level="debug" additivity="true">
+        <Logger name= "ru.mail.track.ui11.seleniumtestcore.log.TestLogger" level="debug" additivity="true">
             <AppenderRef ref="Console"/>
         </Logger>
 
