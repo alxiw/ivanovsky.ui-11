@@ -18,6 +18,7 @@
         <module>homework-07</module>
         <module>selenium-test-core</module>
         <module>selenide-test-core</module>
+        <module>ui-final-work</module>
     </modules>
     <packaging>pom</packaging>
 
