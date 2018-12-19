@@ -1,26 +1,22 @@
 package ru.mail.track.ui11.uifinalwork.task02;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Step;
 import ru.mail.track.ui11.selenidetestcore.PageObject;
 import ru.mail.track.ui11.selenidetestcore.navigation.UrlPattern;
 
-import static com.codeborne.selenide.Selenide.$;
-import static org.junit.Assert.assertTrue;
-
-@UrlPattern("http[s]?://deti.mail.ru/[\\w_\\-]+/[\\w_\\-]+/.*")
+@UrlPattern("http[s]?://deti.mail.ru/[\\w_\\-]+/[\\w_\\-]+/\\?from=smartlenta")
 public class ArticleDetiMailPage extends PageObject<ArticleDetiMailPage> {
 
     private String caption;
 
-    private final String headerSelector = "//div[@data-module='BreadcrumbAdmin']/following-sibling::*//h1";
-
-    ArticleDetiMailPage(String caption) {
+    public ArticleDetiMailPage(String caption) {
         checkPageUrl();
         this.caption = caption;
     }
 
+    @Step("Проверяем заголовок новости")
     public ArticleDetiMailPage checkHeader() {
-        assertTrue($(By.xpath(headerSelector)).getText().contains(caption));
+        checkPageHeader(caption);
         return this;
     }
 }

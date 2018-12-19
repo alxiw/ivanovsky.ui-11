@@ -7,13 +7,15 @@ import ru.mail.track.ui11.uifinalwork.task01.enumeration.Capture;
 public class HoroMailPageTest {
 
     @Test
-    @DisplayName("Check Horo")
-    public void check_articles_and_date_on_page() {
+    @DisplayName("Check Sign By Date of Birth and Titles of Articles")
+    public void check_sign_date_and_captions_on_page() {
         new HoroMailPage()
                 .open()
+                .parseSigns()
                 .rememberTheDateOnThePage()
-                .clickShowAllButton()
+                .clickShowButton()
                 .checkBirthday()
-                .checkCaptions(Capture.NUMBER.getName(), Capture.RUNA.getName(), Capture.MOON.getName(), Capture.CARD.getName());
+                .checkSign()
+                .checkTitles(Capture.NUMBER.getName(), Capture.RUNA.getName(), Capture.MOON.getName(), Capture.CARD.getName());
     }
 }

@@ -10,6 +10,7 @@ public class DetiMailPageTest {
     public void check_news_on_page() {
         new DetiMailPage()
                 .open()
+                .findSmartBand()
                 .clickNewsItem(1)
                 .checkHeader();
     }

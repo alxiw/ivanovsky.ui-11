@@ -10,7 +10,8 @@ public class PetsMailPageTest {
     public void check_consultations_list_view() {
         new PetsMailPage()
                 .open()
+                .findSlider()
                 .clickAnyConsultantOnThePage()
-                .checkHeader();
+                .checkConsultantName();
     }
 }

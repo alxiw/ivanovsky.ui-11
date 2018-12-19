@@ -11,7 +11,6 @@ public class PogodaMailPageTest {
         new PogodaMailPage()
                 .open()
                 .clickAnyNewsItem()
-                .closeArticleWindow();
+                .checkAndCloseArticleWindow();
     }
-
 }
